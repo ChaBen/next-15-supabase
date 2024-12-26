@@ -1,32 +1,40 @@
 {
-  "name": "next-15",
+  "name": "tto",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "type": "supabase gen types typescript --project-id yznduwcvvtkdgkjpwooz > ./src/types/database.types.ts",
+    "db:gen": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:update": "pnpm run db:gen && pnpm run db:migrate"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.1",
     "@supabase/ssr": "^0.5.2",
-    "@tanstack/react-query": "^5.62.8",
+    "@tanstack/react-query": "^5.62.10",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dotenv": "^16.4.7",
+    "drizzle-orm": "^0.38.3",
     "lucide-react": "^0.468.0",
-    "next": "15.1.0",
+    "next": "15.1.2",
+    "postgres": "^3.4.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "tailwind-merge": "^2.5.5",
+    "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "@types/node": "^20.17.10",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "drizzle-kit": "^0.30.1",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2"
   }
 }
