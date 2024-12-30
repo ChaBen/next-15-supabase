@@ -1,2 +1,2 @@
-export { products } from './products'
-export { inventory } from './inventory'
+export { posts } from './posts'
+export { user, account, session, verification } from './auth-schema'

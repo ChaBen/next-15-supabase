@@ -5,36 +5,15 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1735204252142,
-      "tag": "0000_white_wiccan",
+      "when": 1735580598509,
+      "tag": "0000_fixed_black_panther",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "7",
-      "when": 1735205800351,
-      "tag": "0001_big_dragon_lord",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1735205962262,
-      "tag": "0002_broken_human_fly",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1735206017347,
-      "tag": "0003_outstanding_rattler",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1735206052443,
-      "tag": "0004_tiny_turbo",
+      "when": 1735582307808,
+      "tag": "0001_brief_skullbuster",
       "breakpoints": true
     }
   ]
