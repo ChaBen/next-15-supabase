@@ -13,6 +13,7 @@
     "db:u": "pnpm run db:g && pnpm run db:m"
   },
   "dependencies": {
+    "@arcjet/next": "1.0.0-alpha.34",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-label": "^2.1.1",
     "@radix-ui/react-slot": "^1.1.1",
@@ -23,6 +24,7 @@
     "clsx": "^2.1.1",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.38.3",
+    "hono": "^4.6.15",
     "lucide-react": "^0.468.0",
     "next": "15.1.2",
     "pg": "^8.13.1",
@@ -30,11 +32,13 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
+    "sonner": "^1.7.1",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.5.9",
     "@types/node": "^20.17.10",
     "@types/pg": "^8.11.10",
     "@types/react": "^19.0.2",

@@ -23,63 +23,36 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { useState } from 'react'
-import { Loader2 } from 'lucide-react'
-import { toast } from 'sonner'
 
 const formSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8, {
     message: 'Password must be at least 8 characters.',
   }),
-  name: z.string().min(2, {
-    message: 'Name must be at least 2 characters.',
-  }),
 })
 
 export default function page() {
   const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: '',
       password: '',
-      name: '',
     },
   })
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    const res = await authClient.signIn.email({
+      email: data.email,
+      password: data.password,
+    })
+    console.log(res)
 
-  const onSubmit = async (value: z.infer<typeof formSchema>) => {
-    const { data, error } = await authClient.signUp.email(
-      {
-        email: value.email,
-        password: value.password,
-        name: value.name,
-      },
-      {
-        onRequest: () => {
-          setIsLoading(true)
-        },
-        onSuccess: () => {
-          setIsLoading(false)
-          form.reset()
-        },
-        onError: (ctx) => {
-          setIsLoading(false)
-          toast.error(ctx.error.message)
-        },
-      },
-    )
-    console.log(data)
-
-    if (error) {
-      console.log(error)
-    }
+    // router.push('/dashboard')
   }
   return (
-    <div className="flex items-center justify-center h-screen">
-      <Card className="w-96 mx-auto">
+    <div>
+      <h1>Login</h1>
+      <Card className="max-w-sm mx-auto">
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Welcome back</CardTitle>
           <CardDescription>
@@ -88,7 +61,10 @@ export default function page() {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-8 max-w-md mx-auto"
+            >
               <FormField
                 control={form.control}
                 name="email"
@@ -115,29 +91,17 @@ export default function page() {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
-                Sign up
+
+              <Button type="submit" className="w-full">
+                Sign in
               </Button>
             </form>
           </Form>
+
           <div className="text-center text-sm mt-6">
-            Already have an account?{' '}
-            <a href="/auth/login" className="underline underline-offset-4">
-              Sign in
+            Don&apos;t have an account?{' '}
+            <a href="/auth/signup" className="underline underline-offset-4">
+              Sign up
             </a>
           </div>
         </CardContent>
