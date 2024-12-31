@@ -15,6 +15,20 @@
       "when": 1735582307808,
       "tag": "0001_brief_skullbuster",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1735585265047,
+      "tag": "0002_remarkable_dragon_lord",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1735586639220,
+      "tag": "0003_yielding_marrow",
+      "breakpoints": true
     }
   ]
 }
