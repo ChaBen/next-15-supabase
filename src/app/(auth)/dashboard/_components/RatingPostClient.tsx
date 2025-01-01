@@ -1,8 +1,10 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { useMutation } from '@tanstack/react-query'
+import { createPostRating } from '@/lib/api/posts'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Loader2 } from 'lucide-react'
+import { revalidatePath } from 'next/cache'
 
 export default function RatingPostClient({
   id,
@@ -11,21 +13,16 @@ export default function RatingPostClient({
   id: number
   userId: string
 }) {
+  const queryClient = useQueryClient()
   const { mutate, isPending } = useMutation({
-    mutationFn: async () => {
-      console.log('rating')
+    mutationFn: async () => await createPostRating({ id, userId }),
+    onSuccess: (data) => {
+      console.log('asd')
 
-      const response = await fetch('http://localhost:3000/api/posts/rating', {
-        method: 'POST',
-        body: JSON.stringify({
-          id: Number(id),
-          userId: userId,
-        }),
-      })
-      const data = await response.json()
-      return data
+      queryClient.invalidateQueries({ queryKey: ['getPosts'] })
     },
   })
+
   return (
     <Button onClick={() => mutate()} disabled={isPending}>
       {isPending && <Loader2 className="w-4 h-4" />}

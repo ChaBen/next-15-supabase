@@ -44,7 +44,6 @@ export default function page({ userId }: { userId: string }) {
 
   return (
     <div>
-      <h1>add post</h1>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
