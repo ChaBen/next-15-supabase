@@ -26,10 +26,11 @@ const aj = arcjet({
   ],
 })
 
+export const config = { api: { bodyParser: false } }
+
 const betterAuthHandlers = toNextJsHandler(auth.handler)
 const ajProtectedPOST = async (req: NextRequest) => {
   const { email } = await req.clone().json()
-
   const decision = await aj.protect(req, { email })
 
   if (decision.isDenied()) {
@@ -44,11 +45,8 @@ const ajProtectedPOST = async (req: NextRequest) => {
     } else {
       return NextResponse.json({ message: 'Forbidden' }, { status: 403 })
     }
-  } else {
-    return NextResponse.json({
-      message: 'Hello world',
-    })
   }
+  return betterAuthHandlers.POST(req)
 }
 
 export { ajProtectedPOST as POST }

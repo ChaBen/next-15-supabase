@@ -3,11 +3,12 @@ import { Hono } from 'hono'
 import { handle } from 'hono/vercel'
 import { posts, postsLike, postsRating, user } from '@/db/schema'
 import { eq, sql, desc } from 'drizzle-orm'
+import { withAuth } from '@/app/_middleware/withAuth'
+import { zValidator } from '@hono/zod-validator'
+import { createPostSchema } from '@/types/shared.types'
 
-// Hono 앱 인스턴스 생성
 const app = new Hono().basePath('/api/posts')
 
-// API 라우트 정의
 app.get('/', async (c) => {
   try {
     const data = await db
@@ -57,6 +58,34 @@ app.get('/', async (c) => {
   }
 })
 
+app.get('/rating', async (c) => {
+  return c.json({
+    message: '리뷰가 조회되었습니다.',
+  })
+})
+
+app.post(
+  '/rating',
+  withAuth,
+  zValidator('json', createPostSchema),
+  async (c) => {
+    const body = await c.req.json()
+    await db.insert(postsRating).values({
+      postId: body.id,
+      userId: body.userId,
+      rating: Math.floor(Math.random() * 5) + 1,
+    })
+
+    return c.json(
+      {
+        message: '리뷰가 생성되었습니다.',
+        data: body,
+      },
+      200,
+    )
+  },
+)
+
 app.post('/create', async (c) => {
   const body = await c.req.json()
   return c.json({
@@ -65,7 +94,5 @@ app.post('/create', async (c) => {
   })
 })
 
-// Vercel에서 실행하기 위한 핸들러
 export const GET = handle(app)
 export const POST = handle(app)
-export type AppType = typeof app

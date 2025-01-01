@@ -10,9 +10,7 @@ export default async function page() {
   })
 
   return (
-    <div>
-      <h1>add post</h1>
-      <pre>{JSON.stringify(session, null, 2)}</pre>
+    <div className="container p-6">
       <Suspense>
         <PostList userId={session?.user?.id as string} />
       </Suspense>

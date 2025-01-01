@@ -3,8 +3,11 @@
 import { PostForm } from './AddPost'
 import { db } from '@/db'
 import { posts, postsLike, postsRating } from '@/db/schema'
+import { auth } from '@/lib/auth'
 import { eq, and } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
+import { headers } from 'next/headers'
+import { redirect } from 'next/navigation'
 
 export async function AddPost(data: PostForm & { userId: string }) {
   await db.insert(posts).values({
@@ -16,6 +19,20 @@ export async function AddPost(data: PostForm & { userId: string }) {
   revalidatePath('/dashboard')
 
   return { success: true }
+}
+
+export async function withAuth(userId?: string) {
+  if (!userId) {
+    redirect('/auth/login')
+  }
+
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  })
+
+  if (!session) {
+    redirect('/auth/login')
+  }
 }
 
 export async function LikePost({ id, userId }: { id: number; userId: string }) {
@@ -53,8 +70,18 @@ export async function RatingPost({
   return { success: true }
 }
 
-export async function DeletePost(id: number) {
-  await db.delete(posts).where(eq(posts.id, id))
+export async function DeletePost(id: number, userId: string) {
+  await withAuth(userId)
+
+  const result = await db
+    .delete(posts)
+    .where(and(eq(posts.id, id), eq(posts.userId, userId)))
+    .returning({ deletedId: posts.id })
+
+  if (!result.length) {
+    throw new Error('권한이 없거나 존재하지 않는 게시물입니다.')
+  }
+
   revalidatePath('/dashboard')
 
   return { success: true }
