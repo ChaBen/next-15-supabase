@@ -15,8 +15,13 @@ import { useSuspenseQuery } from '@tanstack/react-query'
 export default function PostListClient({ userId }: { userId: string }) {
   const { data } = useSuspenseQuery({
     queryKey: ['getPosts'],
-    queryFn: async () =>
-      await fetch('https://hono-cloudflare.ckqlss.workers.dev/posts'),
+    queryFn: async () => {
+      const response = await fetch(
+        'https://hono-cloudflare.ckqlss.workers.dev/posts',
+      )
+      const data = await response.json()
+      return data
+    },
   })
 
   return (
