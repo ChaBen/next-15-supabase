@@ -1,8 +1,5 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { DeletePost, LikePost, RatingPost, withAuth } from './action'
-import { ThumbsUp } from 'lucide-react'
 import {
   Card,
   CardContent,
@@ -13,21 +10,17 @@ import {
 } from '@/components/ui/card'
 import RatingPostClient from './RatingPostClient'
 import { getPosts } from '@/lib/api/posts'
-import { useQuery } from '@tanstack/react-query'
+import { useSuspenseQuery } from '@tanstack/react-query'
 
 export default function PostListClient({ userId }: { userId: string }) {
-  const { data, error } = useQuery({
+  const { data } = useSuspenseQuery({
     queryKey: ['getPosts'],
     queryFn: () => getPosts({ limit: 10, page: 1 }),
   })
 
-  if (error) {
-    return <div>Error: {error.message}</div>
-  }
-
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {data?.data.map((item: any) => (
+      {data.data.map((item: any) => (
         <Card key={item.id}>
           <CardHeader>
             <CardTitle>{item.title}</CardTitle>

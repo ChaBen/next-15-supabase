@@ -30,23 +30,28 @@ export const config = { api: { bodyParser: false } }
 
 const betterAuthHandlers = toNextJsHandler(auth.handler)
 const ajProtectedPOST = async (req: NextRequest) => {
-  const { email } = await req.clone().json()
-  const decision = await aj.protect(req, { email })
+  console.log(req.nextUrl.pathname)
 
-  if (decision.isDenied()) {
-    if (decision.reason.isEmail()) {
-      return NextResponse.json(
-        {
-          message: 'Invalid email',
-          reason: decision.reason,
-        },
-        { status: 400 },
-      )
-    } else {
-      return NextResponse.json({ message: 'Forbidden' }, { status: 403 })
+  if (req.nextUrl.pathname === '/api/auth/sign-in/email') {
+    return betterAuthHandlers.POST(req)
+  } else {
+    const { email } = await req.clone().json()
+    const decision = await aj.protect(req, { email })
+
+    if (decision.isDenied()) {
+      if (decision.reason.isEmail()) {
+        return NextResponse.json(
+          {
+            message: 'Invalid email',
+            reason: decision.reason,
+          },
+          { status: 400 },
+        )
+      } else {
+        return NextResponse.json({ message: 'Forbidden' }, { status: 403 })
+      }
     }
   }
-  return betterAuthHandlers.POST(req)
 }
 
 export { ajProtectedPOST as POST }
