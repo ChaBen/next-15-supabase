@@ -15,12 +15,13 @@ import { useSuspenseQuery } from '@tanstack/react-query'
 export default function PostListClient({ userId }: { userId: string }) {
   const { data } = useSuspenseQuery({
     queryKey: ['getPosts'],
-    queryFn: () => getPosts({ limit: 10, page: 1 }),
+    queryFn: async () =>
+      await fetch('https://hono-cloudflare.ckqlss.workers.dev/posts'),
   })
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {data.data.map((item: any) => (
+      {(data as any).data.map((item: any) => (
         <Card key={item.id}>
           <CardHeader>
             <CardTitle>{item.title}</CardTitle>
