@@ -11,9 +11,7 @@ export default async function page() {
 
   return (
     <div className="container p-6">
-      <Suspense>
-        <PostListClient userId={session?.user?.id as string} />
-      </Suspense>
+      <PostListClient userId={session?.user?.id as string} />
       <AddPost userId={session?.user?.id as string} />
     </div>
   )

@@ -9,11 +9,10 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import RatingPostClient from './RatingPostClient'
-import { getPosts } from '@/lib/api/posts'
-import { useSuspenseQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
 export default function PostListClient({ userId }: { userId: string }) {
-  const { data } = useSuspenseQuery({
+  const { data } = useQuery({
     queryKey: ['getPosts'],
     queryFn: async () => {
       const response = await fetch(
@@ -26,7 +25,7 @@ export default function PostListClient({ userId }: { userId: string }) {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {(data as any).data.map((item: any) => (
+      {(data as any)?.data.map((item: any) => (
         <Card key={item.id}>
           <CardHeader>
             <CardTitle>{item.title}</CardTitle>
